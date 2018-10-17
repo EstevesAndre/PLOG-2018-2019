@@ -72,30 +72,39 @@ display_horizontal:-
 
 display_game([Head|Tail],player1) :-
 	display_horizontal,
-	display_board([Head|Tail],player1).
+	display_board([Head|Tail], player1, 5).
 
-display_board([], _) :-
-        write('-------------------------------'), nl.
+display_board([], _, _) :-
+        write('---------------------------------'), nl.
 
-display_board([Head|Tail], _) :-
-        write('-------------------------------'), nl,
-        display_line(Head, Head, 5), nl,
-        display_board(Tail, _).
+display_board([Head|Tail], _, X_val) :-
+        write('---------------------------------'), nl,
+        display_line(Head, Head, 5, X_val), nl,
+        X_next is X_val - 1,
+        display_board(Tail, _, X_next).
 
-display_line([], _, 1) :- write('|').  %ultimo | colocado por linha
+display_line([], _, 1, _) :- write('| |').  %ultimo | colocado por linha
 
-display_line([Head|Tail], Original, N_line) :-
+display_line([Head|Tail], Original, N_line, X_val) :-
         write('|'),
         piece(Head, Piece_Rep),
         display_piece_line(N_line, Piece_Rep, 5),
-        display_line(Tail, Original, N_line).
+        display_line(Tail, Original, N_line, X_val).
 
-display_line([], Original, N_line) :-
-        Next is N_line - 1,
-        N_line > 0,
+display_line([], Original, 3, X_val) :-
+        write('|'),
+        write(X_val),
         write('|'),
         nl,
-        display_line(Original, Original, Next).
+        display_line(Original, Original, 2, X_val).
+
+display_line([], Original, N_line, X_val) :-
+        Next is N_line - 1,
+        N_line > 0,
+        N_line =\= 3,
+        write('| |'),
+        nl,
+        display_line(Original, Original, Next, X_val).
 
 display_piece_line(N_line, [_|Tail], Current_line) :-
         Next is Current_line - 1,
