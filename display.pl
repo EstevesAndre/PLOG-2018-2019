@@ -12,12 +12,12 @@ board( [ [p1, p2, p3, p4, p5, p6],
          [pA, pB, pC, pD, pE, pF]
         ]).
 
-InitialBoard( [ [p1, p2, p3, p4, p5, p6],
-         [ e,  e,  e,  e,  e,  e],
-         [ e,  e,  e,  e,  e,  e],
-         [ e,  e,  e,  e,  e,  e],
-         [ e,  e,  e,  e,  e,  e],
-         [pA, pB, pC, pD, pE, pF]
+initialBoard( [ [p1, p2, p3, p4, p5, p6],
+                [ e,  e,  e,  e,  e,  e],
+                [ e,  e,  e,  e,  e,  e],
+                [ e,  e,  e,  e,  e,  e],
+                [ e,  e,  e,  e,  e,  e],
+                [pA, pB, pC, pD, pE, pF]
         ]).
 
 piece(pA, [ ['.', '.', '.', '.', '.'],
@@ -112,12 +112,12 @@ piece(e, [ ['.', '.', '.', '.', '.'],
         ]). 
 
 display_horizontal:-        
-        write('-------------------------------------'), nl,
-	write('|  a  |  b  |  c  |  d  |  e  |  f  |'), nl.
+        write('---------------------------------------'), nl,
+	write('|  a  |  b  |  c  |  d  |  e  |  f  | |'), nl.
 
-display_game([Head|Tail],player1) :-
+display_game([Head|Tail],Player1) :-
 	display_horizontal,
-	display_board([Head|Tail], player1, 6).
+	display_board([Head|Tail], Player1, 6).
 
 display_board([], _, _) :-
         write('---------------------------------------'), nl.
