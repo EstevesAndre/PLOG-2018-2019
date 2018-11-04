@@ -25,9 +25,11 @@ gameloop(Board, Player1, Player2) :-
     p1Turn(Board, NewBoard, Player1),
     (
         (checkGameState('P1', NewBoard), write('\nNice Move!\n'));
+        display_board(T,Player1),
         (p2Turn(NewBoard,NewNewBoard,Player2), 
             (
                 (checkGameState('P2', NewNewBoard), write('\nNice Move!\n'));
+                display_board(T,Player2),
                 (gameLoop(NewNewBoard, Player1, Player2))    
             )
         )
@@ -36,5 +38,5 @@ gameloop(Board, Player1, Player2) :-
 
 startGame(Player1, Player2) :-
     initialBoard(T),
-    display_game(T,Player1),
+    display_board(T,Player1),
     gameloop(T,Player1,Player2).

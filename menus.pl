@@ -35,7 +35,7 @@ printMainMenu :-
     write('|        Andre Esteves ------------------------- Luis Silva       |'),nl,
     write('|_________________________________________________________________|'),nl.
 
-parseInput(1) :-
+parseInput(1) :-    
     startGame('Player', 'Player'),
     mainMenu.
 
