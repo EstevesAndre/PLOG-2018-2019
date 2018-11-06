@@ -61,27 +61,36 @@ has_element(X, [X|_]).
 has_element(X, [_|Ys]) :-
     has_element(X, Ys).
 
+/* Player turn */
+p1Turn(Board, NewBoard, 'Player') :- 
+    nl, write('Player - your turn:'), nl,
+    p1player(Board, NewBoard).
 
-p1Turn(_, _, 'Player 1') :- p1Turn(Board, NewBoard, 'Player').
-p2Turn(_, _, 'Player 2') :- p2Turn(Board, NewBoard, 'Player').
-p1Turn(_, _, 'Computer 1') :- p1Turn(Board, NewBoard, 'Computer').
-p2Turn(_, _, 'Computer 2') :- p2Turn(Board, NewBoard, 'Computer').
+p1Turn(Board, NewBoard, 'Player 1') :-
+    nl, write('Player 1 - your turn:'), nl,
+    p1player(Board, NewBoard).
 
-/* Player 1 turn */
-p1Turn(Board, NewBoard, 'Player') :-
-    nl, write('--------------- PLAYER1 ---------------'), nl.   
+p2Turn(Board, NewBoard, 'Player 2') :-
+    nl, write('Player 2 - your turn:'), nl,
+    p2player(Board, NewBoard).
 
-/* Computer 1 turn */
-p1Turn(Board, NewBoard, 'Computer') :-
-    nl, write('-------------- COMPUTER1 --------------'), nl.
+/* Computer turn */
+p2Turn(Board, NewBoard, 'Computer') :- 
+    nl, write('Computer - your turn:'), nl,
+    p2computer(Board, NewBoard).
 
-/* Player 2 turn */
-p2Turn(Board, NewBoard, 'Player') :-
-    nl, write('--------------- PLAYER2 ---------------'), nl.
+p1Turn(Board, NewBoard, 'Computer 1') :-
+    nl, write('Computer 1 - your turn:'), nl,
+    p1computer(Board, NewBoard).
 
-/* Computer 2 turn */
-p2Turn(Board, NewBoard, 'Computer') :-
-    nl, write('-------------- COMPUTER2 --------------'), nl.
+p2Turn(Board, NewBoard, 'Computer 2') :-
+    nl, write('Computer 2 - your turn:'), nl,
+    p2computer(Board, NewBoard).
+
+p1player(Board, NewBoard).
+p2player(Board, NewBoard).
+p1computer(Board, NewBoard).
+p2computer(Board, NewBoard).
 
 /* Loop do jogo */
 gameloop(Board, Player1, Player2) :-
