@@ -37,7 +37,6 @@ gameloop(Board, Player1, Player2) :-
         )
     ).
     
-
 startGame(Player1, Player2) :-
     initialBoard(T),
     display_board(T,Player1),
