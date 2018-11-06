@@ -12,13 +12,6 @@ board( [ [p1, p2, p3, p4, p5, p6],
          [pA, pB, pC, pD, pE, pF]
         ]).
 
-initialBoard( [ [p1, p2, p3, p4, p5, p6],
-         [ e,  e,  e,  e,  e,  e],
-         [ e,  e,  e,  e,  e,  e],
-         [ e,  e,  e,  e,  e,  e],
-         [ e,  e,  e,  e,  e,  e],
-         [pA, pB, pC, pD, pE, pF]
-        ]).
 /*
 initialBoard( [ [       
                         [['.', '.', '.', '.', '.'],['.', '.', '.', '.', '.'],['.', '.', 1, '.', '.'],['.', '.', 'x', '.', '.'],['.', '.', '.', '.', '.']],
@@ -184,6 +177,7 @@ display_board_aux([Head|Tail], _, X_val) :-
 display_line([], _, 1, _) :- write('| |').  %ultimo | colocado por linha
 
 display_line([Head|Tail], Original, N_line, X_val) :-
+        N_line \= 0,
         write('|'),
         piece(Head, Piece_Rep),
         display_piece_line(N_line, Piece_Rep, 5),
@@ -197,9 +191,10 @@ display_line([], Original, 3, X_val) :-
         display_line(Original, Original, 2, X_val).
 
 display_line([], Original, N_line, X_val) :-
+        N_line \= 3,
+        N_line \= 1,
         Next is N_line - 1,
         N_line > 0,
-        N_line =\= 3,
         write('| |'),
         nl,
         display_line(Original, Original, Next, X_val).

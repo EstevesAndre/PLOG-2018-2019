@@ -3,4 +3,4 @@
 :- consult('menus.pl').
 
 eigenstate :- 
-    mainMenu.
+    play.
