@@ -36,13 +36,13 @@ printMainMenu :-
     write('|_________________________________________________________________|'),nl.
 
 parseInput(1) :-    
-    !, startGame('Player', 'Player').
+    !, startGame('Player 1', 'Player 2').
 
 parseInput(2) :-
     !, startGame('Player', 'Computer').
 
 parseInput(3) :-
-    !, startGame('Computer', 'Computer').
+    !, startGame('Computer 1', 'Computer 2').
 
 parseInput(0) :-
     !, write('Exiting...\n').

@@ -3,11 +3,27 @@ if_then_else(_, _, Action2) :- Action2.
 
 /* Checks for game over conditions. If fail, game is over */
 
-game_over(Board, _) :-
-    checkPlayerPieces(Board, [pA, pB, pC, pD, pE, pF], 0),
+game_over(Board, Player1, Player2) :-
+    winnerP1(Board, Player1),
+    winnerP2(Board, Player2).
+
+winnerP1(Board, _) :-
     checkPlayerPieces(Board, [p1, p2, p3, p4, p5, p6], 0),
-    checkP1Pins,
-    checkP2Pins.
+    checkP1Pins, !.
+
+winnerP1(_, Player1) :-
+    write(Player1),
+    write(' wins!'),
+    fail.
+
+winnerP2(Board, _) :-
+    checkPlayerPieces(Board, [pA, pB, pC, pD, pE, pF], 0),
+    checkP2Pins, !.
+
+winnerP2(_, Player2) :-
+    write(Player2),
+    write(' wins!'),
+    fali.
 
 checkPlayerPieces(_, [], Cnt) :- Cnt \= 1. 
 
@@ -45,6 +61,12 @@ has_element(X, [X|_]).
 has_element(X, [_|Ys]) :-
     has_element(X, Ys).
 
+
+p1Turn(_, _, 'Player 1') :- p1Turn(Board, NewBoard, 'Player').
+p2Turn(_, _, 'Player 2') :- p2Turn(Board, NewBoard, 'Player').
+p1Turn(_, _, 'Computer 1') :- p1Turn(Board, NewBoard, 'Computer').
+p2Turn(_, _, 'Computer 2') :- p2Turn(Board, NewBoard, 'Computer').
+
 /* Player 1 turn */
 p1Turn(Board, NewBoard, 'Player') :-
     nl, write('--------------- PLAYER1 ---------------'), nl.   
@@ -65,11 +87,11 @@ p2Turn(Board, NewBoard, 'Computer') :-
 gameloop(Board, Player1, Player2) :-
     p1Turn(Board, NewBoard, Player1),
     (
-        game_over(Board, _),
+        game_over(Board, Player1, Player2),
         display_board(Board,Player1),
         (p2Turn(NewBoard,NewNewBoard,Player2), 
             (
-                game_over(Board, _),
+                game_over(Board, Player1, Player2),
                 display_board(Board,Player2),
                 gameloop(Board, Player1, Player2)    
             )
