@@ -3,33 +3,34 @@ if_then_else(_, _, Action2) :- Action2.
 
 /* Checks for game over conditions. If fail, game is over */
 
-game_over(Board, Player1, Player2) :-
-    winnerP1(Board, Player1),
-    winnerP2(Board, Player2).
+game_over(Player1, Player2) :-
+    winnerP1(Player1),
+    winnerP2(Player2).
 
-winnerP1(Board, _) :-
-    checkPlayerPieces(Board, [p1, p2, p3, p4, p5, p6], 0),
+winnerP1(_) :-
+    checkPlayerPieces([p1, p2, p3, p4, p5, p6], 0),
     checkP1Pins, !.
 
-winnerP1(_, Player1) :-
+winnerP1(Player1) :-
     write(Player1),
     write(' wins!'),
     fail.
 
-winnerP2(Board, _) :-
-    checkPlayerPieces(Board, [pA, pB, pC, pD, pE, pF], 0),
+winnerP2(_) :-
+    checkPlayerPieces([pA, pB, pC, pD, pE, pF], 0),
     checkP2Pins, !.
 
-winnerP2(_, Player2) :-
+winnerP2(Player2) :-
     write(Player2),
     write(' wins!'),
     fali.
 
-checkPlayerPieces(_, [], Cnt) :- Cnt \= 1. 
+checkPlayerPieces([], Cnt) :- Cnt \= 1. 
 
-checkPlayerPieces(Board, [P|Ps], Cnt) :-
+checkPlayerPieces([P|Ps], Cnt) :-
     Inc is Cnt+1,
-    if_then_else(has_element_matrix(P, Board), checkPlayerPieces(Board, Ps, Inc), checkPlayerPieces(Board, Ps, Cnt)).
+    board(T),
+    if_then_else(has_element_matrix(P, T), checkPlayerPieces(Ps, Inc), checkPlayerPieces(Ps, Cnt)).
 
 checkP1Pins :-
     checkFullPins(pA),
@@ -62,47 +63,48 @@ has_element(X, [_|Ys]) :-
     has_element(X, Ys).
 
 /* Player turn */
-p1Turn(Board, NewBoard, 'Player') :- 
+p1Turn('Player') :- 
     nl, write('Player - your turn:'), nl,
-    p1player(Board, NewBoard).
+    p1player.
 
-p1Turn(Board, NewBoard, 'Player 1') :-
+p1Turn('Player 1') :-
     nl, write('Player 1 - your turn:'), nl,
-    p1player(Board, NewBoard).
+    p1player.
 
-p2Turn(Board, NewBoard, 'Player 2') :-
+p2Turn('Player 2') :-
     nl, write('Player 2 - your turn:'), nl,
-    p2player(Board, NewBoard).
+    p2player.
 
 /* Computer turn */
-p2Turn(Board, NewBoard, 'Computer') :- 
+p2Turn('Computer') :- 
     nl, write('Computer - your turn:'), nl,
-    p2computer(Board, NewBoard).
+    p2computer.
 
-p1Turn(Board, NewBoard, 'Computer 1') :-
+p1Turn('Computer 1') :-
     nl, write('Computer 1 - your turn:'), nl,
-    p1computer(Board, NewBoard).
+    p1computer.
 
-p2Turn(Board, NewBoard, 'Computer 2') :-
+p2Turn('Computer 2') :-
     nl, write('Computer 2 - your turn:'), nl,
-    p2computer(Board, NewBoard).
+    p2computer.
 
-p1player(Board, NewBoard).
-p2player(Board, NewBoard).
-p1computer(Board, NewBoard).
-p2computer(Board, NewBoard).
+p1player.
+p2player.
+p1computer.
+p2computer.
 
 /* Loop do jogo */
-gameloop(Board, Player1, Player2) :-
-    p1Turn(Board, NewBoard, Player1),
+gameloop(Player1, Player2) :-
+    p1Turn(Player1),
     (
-        game_over(Board, Player1, Player2),
-        display_board(Board,Player1),
-        (p2Turn(NewBoard,NewNewBoard,Player2), 
+        game_over(Player1, Player2),
+        board(T),
+        display_board(T,Player1),
+        (p2Turn(Player2), 
             (
-                game_over(Board, Player1, Player2),
-                display_board(Board,Player2),
-                gameloop(Board, Player1, Player2)    
+                game_over(Player1, Player2),
+                display_board(T, Player2),
+                gameloop(Player1, Player2)    
             )
         )
     ).
@@ -110,4 +112,4 @@ gameloop(Board, Player1, Player2) :-
 startGame(Player1, Player2) :-
     board(T),
     display_board(T,Player1),
-    gameloop(T,Player1, Player2).
+    gameloop(Player1, Player2).
