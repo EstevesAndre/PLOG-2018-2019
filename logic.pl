@@ -88,8 +88,33 @@ p2Turn('Computer 2') :-
     nl, write('Computer 2 - your turn:'), nl,
     p2computer.
 
-p1player.
-p2player.
+/* Gets player move info if is the first player */
+p1player :-
+    choseMovePiece([pA, pB, pC, pD, pE, pF]),
+    chosePinPiece([pA, pB, pC, pD, pE, pF]),
+    chosePinPiece([pA, pB, pC, pD, pE, pF]).
+
+/* Gets player move info if is the sencond player */
+p2player :-
+    choseMovePiece([p1, p2, p3, p4, p5, p6]),
+    chosePinPiece([p1, p2, p3, p4, p5, p6]),
+    chosePinPiece([p1, p2, p3, p4, p5, p6]).
+
+choseMovePiece(Pieces) :-
+    write('Choose piece to move: (ex. pX)'),
+    read(Piece), nl,
+    \+(checkValidPiece(Piece, Pieces)).
+    
+/* Loop to receive valid piece */
+checkValidPiece(Piece, Pieces) :-
+    \+((has_element(Piece, Pieces),
+         board(T),
+         has_element_matrix(Piece, T))),
+    write('Invalid Piece. Choose piece to move: (ex. pX)'),
+    read(NewPiece), nl,
+    checkValidPiece(NewPiece, Pieces).
+    
+
 p1computer.
 p2computer.
 
