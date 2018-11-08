@@ -106,7 +106,7 @@ piece(e, [ ['.', '.', '.', '.', '.'],
 
 display_horizontal:-        
         write('|-------------------------------------|'), nl,
-	write('|  a  |  b  |  c  |  d  |  e  |  f  | |'), nl.
+	write('|  1  |  2  |  3  |  4  |  5  |  6  | |'), nl.
 
 display_head(Name) :-
         write('---------------------------------------'), nl,
@@ -139,7 +139,8 @@ display_line([Head|Tail], Original, N_line, X_val) :-
 
 display_line([], Original, 3, X_val) :-
         write('|'),
-        write(X_val),
+        PrintVal is 7 - X_val,
+        write(PrintVal),
         write('|'),
         nl,
         display_line(Original, Original, 2, X_val).

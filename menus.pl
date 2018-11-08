@@ -1,4 +1,5 @@
 play :- 
+    prompt(_, ''),
     printMainMenu,
     write('--> Insert your option: '),
     read(Input),
