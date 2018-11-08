@@ -1,16 +1,3 @@
-/* Player turn */
-p1Turn('Player') :- 
-    nl, write('Player - your turn:'), nl,
-    p1player.
-
-p1Turn('Player 1') :-
-    nl, write('Player 1 - your turn:'), nl,
-    p1player.
-
-p2Turn('Player 2') :-
-    nl, write('Player 2 - your turn:'), nl,
-    p2player.
-
 /* Gets player move info if is the first player */
 p1player :-
     chooseMovePiece([pA, pB, pC, pD, pE, pF]),
@@ -42,7 +29,7 @@ validPieceLoop(Piece, Pieces) :-
 chooseMove(Piece) :-
     board(T),
     index(T, Row, Col, Piece),
-    getAvailableMoves(Piece, Row, Column, [], Moves, 5, 5),
+    getAvailableMoves(Piece, Row, Col, [], Moves, 5, 5),
     write('Available moves [row, column]: '),
     write(Moves), nl,
     write('Choose target row: '),

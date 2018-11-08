@@ -10,7 +10,7 @@ has_element_matrix(X, [A|As]) :-
     has_element_matrix(X, As).
 
 has_element(X, [X|_]).
-has_element(X, [Y|Ys]) :-
+has_element(X, [_|Ys]) :-
     has_element(X, Ys).
 
 index(Matrix, Row, Col, Value):-

@@ -46,6 +46,32 @@ move(Piece, Row, Col, TrgRow, TrgCol) :-
     retract(board(T)),
     assert(board(FinalBoard)).
 
+/* Player and computer turns */
+p1Turn('Player') :- 
+    nl, write('Player - your turn:'), nl,
+    p1player.
+
+p1Turn('Player 1') :-
+    nl, write('Player 1 - your turn:'), nl,
+    p1player.
+
+p1Turn('Computer 1') :-
+    nl, write('Computer 1 - your turn:'), nl,
+    p1computer.
+
+p2Turn('Player 2') :-
+    nl, write('Player 2 - your turn:'), nl,
+    p2player.
+
+p2Turn('Computer') :- 
+    nl, write('Computer - your turn:'), nl,
+    p2computer.
+
+p2Turn('Computer 2') :-
+    nl, write('Computer 2 - your turn:'), nl,
+    p2computer.
+
+
 /* Loop do jogo */
 gameloop(Player1, Player2) :-
     p1Turn(Player1),
