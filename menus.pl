@@ -4,7 +4,7 @@ play :-
     printMainMenu,
     write('--> Insert your option: '),
     read(Input),
-    parseInput(Input),
+    \+parseInput(Input),
     play.
 
 printMainMenu :-
@@ -48,7 +48,7 @@ parseInput(3) :-
     !, startGame('Computer 1', 'Computer 2').
 
 parseInput(0) :-
-    !, write('Exiting...\n'), fail.
+    !, write('Exiting...\n').
 
 parseInput(_Other) :-
     write('\nERROR: invalid option, choose one of the options.\n'),    

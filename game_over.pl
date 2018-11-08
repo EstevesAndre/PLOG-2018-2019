@@ -10,7 +10,7 @@ winnerP1(_) :-
 
 winnerP1(Player1) :-
     write(Player1),
-    write(' wins!'),
+    write(' wins!'), nl, nl,
     fail.
 
 winnerP2(_) :-
@@ -19,7 +19,7 @@ winnerP2(_) :-
 
 winnerP2(Player2) :-
     write(Player2),
-    write(' wins!'),
+    write(' wins!'), nl, nl,
     fail.
 
 checkPlayerPieces([], Cnt) :- Cnt \= 1. 

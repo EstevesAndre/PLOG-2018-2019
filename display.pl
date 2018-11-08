@@ -1,6 +1,3 @@
-% retract assert
-% board(T), display_game(T, player1).
-
 display_horizontal:-        
         write('|-------------------------------------|'), nl,
 	write('|  1  |  2  |  3  |  4  |  5  |  6  | |'), nl.

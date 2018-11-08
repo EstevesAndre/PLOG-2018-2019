@@ -50,7 +50,7 @@ callback_chooseMove(Piece) :-
 /* Chooses piece to pin*/
 choosePinPiece(Pieces) :-
     write('\nChoose piece to pin (ex. pX - p0 to skip): '),
-    read(Piece), nl,
+    read(Piece),
     if_then_else(Piece = 'p0', fail, true),
     if_then_else(validPieceLoopPin(Piece, Pieces), choosePin(Piece), callback_choosePinPiece(Pieces)),
     fail.
