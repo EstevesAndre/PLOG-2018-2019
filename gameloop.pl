@@ -1,3 +1,16 @@
+getAvailablePinSpaces(_, Return, Return, 0, 1).
+getAvailablePinSpaces(Piece, Spaces, Return, 0, PinY) :-
+    NewY is PinY - 1,
+    getAvailablePinSpaces(Piece, Spaces, Return, 5, NewY).
+getAvailablePinSpaces(Piece, Spaces, Return, PinX, PinY) :-
+    piece(Piece, Mat),
+    NewX is PinX - 1,
+    index(Mat, PinX, PinY, Val),
+    append(Spaces, [[PinX, PinY]], NewSpaces),
+    if_then_else(Val = '.',
+                getAvailablePinSpaces(Piece, NewSpaces, Return, NewX, PinY),
+                getAvailablePinSpaces(Piece, Spaces, Return, NewX, PinY)).
+
 getAvailableMoves(_, _, _, Return, Return, 0, 1).
 getAvailableMoves(Piece, Row, Column, Moves, Return, 0, PinY) :-
     NewY is PinY - 1,
@@ -45,6 +58,15 @@ move(Piece, Row, Col, TrgRow, TrgCol) :-
     setElemMatrix(TrgRow, TrgCol, Piece, NewBoard, FinalBoard),
     retract(board(T)),
     assert(board(FinalBoard)).
+
+pin(Piece, TrgRow, TrgCol) :-
+    piece(Piece, Mat),
+    index(Mat, 3, 3, Val),
+    if_then_else(has_element(Val, ['A', 'B', 'C', 'D', 'E', 'F']),
+                setElemMatrix(TrgRow, TrgCol, 'o', Mat, NewMat),
+                setElemMatrix(TrgRow, TrgCol, 'x', Mat, NewMat)),
+    retract(piece(Piece, Mat)),
+    assert(piece(Piece, NewMat)).
 
 /* Player and computer turns */
 p1Turn('Player') :- 
