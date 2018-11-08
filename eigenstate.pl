@@ -5,6 +5,7 @@
 :- consult('game_over.pl').
 :- consult('player_turn.pl').
 :- consult('computer_turn.pl').
+:- consult('data.pl').
 
 eigenstate :- 
     play.
