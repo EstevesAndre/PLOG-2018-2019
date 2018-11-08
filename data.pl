@@ -136,3 +136,6 @@ assert(piece(e, [ ['.', '.', '.', '.', '.'],
            ['.', '.', '.', '.', '.'],
            ['.', '.', '.', '.', '.']
         ])).
+
+opPieces([pA, pB, pC, pD, pE, pF], [p1, p2, p3, p4, p5, p6]).
+opPieces([p1, p2, p3, p4, p5, p6], [pA, pB, pC, pD, pE, pF]).

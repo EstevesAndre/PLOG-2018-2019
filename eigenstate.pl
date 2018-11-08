@@ -6,6 +6,7 @@
 :- consult('player_turn.pl').
 :- consult('computer_turn.pl').
 :- consult('data.pl').
+:- consult('evaluation.pl').
 
 eigenstate :- 
     play.

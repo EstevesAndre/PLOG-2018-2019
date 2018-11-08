@@ -11,11 +11,11 @@ getAvailablePinSpaces(Piece, Spaces, Return, PinX, PinY) :-
                 getAvailablePinSpaces(Piece, NewSpaces, Return, NewX, PinY),
                 getAvailablePinSpaces(Piece, Spaces, Return, NewX, PinY)).
 
-getAvailableMoves(_, _, _, Return, Return, 0, 1).
-getAvailableMoves(Piece, Row, Column, Moves, Return, 0, PinY) :-
+getAvailableMoves(_, Return, Return, 0, 1).
+getAvailableMoves(Piece, Moves, Return, 0, PinY) :-
     NewY is PinY - 1,
-    getAvailableMoves(Piece, Row, Column, Moves, Return, 5, NewY).
-getAvailableMoves(Piece, Row, Column, Moves, Return, PinX, PinY) :-
+    getAvailableMoves(Piece, Moves, Return, 5, NewY).
+getAvailableMoves(Piece, Moves, Return, PinX, PinY) :-
     NewX is PinX - 1,
     board(T),
     index(T, PieceX, PieceY, Piece),
@@ -25,8 +25,8 @@ getAvailableMoves(Piece, Row, Column, Moves, Return, PinX, PinY) :-
     Ypos is PieceY-Ydiff,
     append(Moves, [[Xpos, Ypos]], NewMoves),
     if_then_else(checkPin(Piece, PinX, PinY),
-                 getAvailableMoves(Piece, Row, Column, NewMoves, Return, NewX, PinY),
-                 getAvailableMoves(Piece, Row, Column, Moves, Return, NewX, PinY)) , !.
+                 getAvailableMoves(Piece, NewMoves, Return, NewX, PinY),
+                 getAvailableMoves(Piece, Moves, Return, NewX, PinY)) , !.
     
 checkPin(Piece, PinX, PinY) :-
     piece(Piece, Mat),

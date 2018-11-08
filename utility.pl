@@ -24,3 +24,13 @@ setElemMatrix(1, Ncol, Val, [ [Elem | Tail1] | Tail2], [[Elem | Head] | Tail2]) 
 setElemMatrix(Nrow, Ncol, Val, [Elem | Tail1], [Elem | Out]) :- 
 	Next is Nrow-1,
 	setElemMatrix(Next, Ncol, Val, Tail1, Out).
+
+countElem([],_,0).
+countElem([X|T],X,Y):- !, countElem(T,X,Z), Y is 1+Z.
+countElem([_|T],X,Z):- countElem(T,X,Z).
+
+countElemMatrix([], _, Cnt, Cnt).
+countElemMatrix([Row|M], Elem, Cnt, Return) :-
+    countElem(Row, Elem, RowCnt),
+    NewCnt is Cnt + RowCnt,
+    countElemMatrix(M, Elem, NewCnt, Return).

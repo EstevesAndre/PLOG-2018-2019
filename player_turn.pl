@@ -30,7 +30,7 @@ validPieceLoop(Piece, Pieces) :-
 chooseMove(Piece) :-
     board(T),
     index(T, Row, Col, Piece),
-    getAvailableMoves(Piece, Row, Col, [], Moves, 5, 5),
+    getAvailableMoves(Piece, [], Moves, 5, 5),
     write('Available moves [row, column]: '),
     write(Moves), nl,
     write('Choose target row: '),
