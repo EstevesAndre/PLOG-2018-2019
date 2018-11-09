@@ -33,9 +33,11 @@ valid_moves(_, [], Moves, Moves).
 valid_moves(Board, [P|Pieces], Moves, Return) :-
     if_then_else(has_element_matrix(P, Board),
                 getAvailableEvalMoves(Board, P, [], PieceMoves, 5, 5),
-                PieceMoves is []),
+                black(PieceMoves)),
     append(Moves, PieceMoves, NextMoves),
     valid_moves(Board, Pieces, NextMoves, Return).
+
+black([]).
 
 getAvailableEvalMoves(_, _, Return, Return, 0, 1).
 getAvailableEvalMoves(Board, Piece, Moves, Return, 0, PinY) :-
@@ -49,18 +51,39 @@ getAvailableEvalMoves(Board, Piece, Moves, Return, PinX, PinY) :-
     Xpos is PieceX+Xdiff,
     Ypos is PieceY-Ydiff,
     append(Moves, [[Piece, Xpos, Ypos]], NewMoves),
-    if_then_else(checkPin(Piece, PinX, PinY),
+    if_then_else(checkPinEval(Board, Piece, PinX, PinY),
                  getAvailableEvalMoves(Board, Piece, NewMoves, Return, NewX, PinY),
                  getAvailableEvalMoves(Board, Piece, Moves, Return, NewX, PinY)) , !.
 
+checkPinEval(Board, Piece, PinX, PinY) :-
+    piece(Piece, Mat),
+    index(Mat, PinX, PinY, 'o'),
+    index(Board, PieceX, PieceY, Piece),
+    Xdiff is PinX-3,
+    Ydiff is PinY-3,
+    PieceX+Xdiff > 0,
+    PieceX+Xdiff < 7,
+    PieceY+Ydiff > 0,
+    PieceY+Ydiff < 7.
+
+checkPinEval(Board, Piece, PinX, PinY) :-
+    piece(Piece, Mat),
+    index(Mat, PinX, PinY, 'x'),
+    index(Board, PieceX, PieceY, Piece),
+    Xdiff is PinX-3,
+    Ydiff is PinY-3,
+    PieceX+Xdiff > 0,
+    PieceX+Xdiff < 7,
+    PieceY+Ydiff > 0,
+    PieceY+Ydiff < 7.
 
 /* Evaluates the position from the POV of the player with Pieces */
 value(Board, Pieces, Eval) :-
     opPieces(Pieces, OpPieces),
     calculatePieceVal(Board, Pieces, OpPieces, 0, Val1),
     calculatePinVal(Board, Pieces, OpPieces, 0, Val2),
-    calculateTotalMovesVal(Board, Pieces, OpPieces, 0, Val3),
-    calculatePieceCaptureVal(Board, Pieces, OpPieces, 0, Val4),
+    calculateTotalMovesVal(Board, Pieces, OpPieces, Val3),
+    calculatePieceCaptureVal(Board, Pieces, OpPieces, Val4),
     Eval is Val1 + Val2 + Val3 + Val4.
 
 /* Calculates value of the position using number of pieces
@@ -107,8 +130,31 @@ calculatePinVal(Board, [P|Pieces], OpPieces, Val, Return) :-
                 calculatePinVal(Board, Pieces, OpPieces, NextVal, Return),
                 calculatePinVal(Board, Pieces, OpPieces, Val, Return)).
 
-%TODO
-calculateTotalMovesVal(_, _, _, 0, 0).
-calculatePieceCaptureVal(_, _, _, 0, 0).
-    
-    
+/* Calculates value of the position using number of moves available
+    - +1 for every move player has available
+    - -1 for every move opponent has available */
+
+calculateTotalMovesVal(Board, Pieces, OpPieces, Val) :-
+    valid_moves(Board, Pieces, [], PlayerMoves),
+    length(PlayerMoves, Val1),
+    valid_moves(Board, OpPieces, [], OppMoves),
+    length(OppMoves, Val2),
+    Val is Val1 - Val2.
+/* Calculates value of the position using number of pieces available for capture
+    - +3 for every move player has available
+    - -8 for every move opponent has available */
+
+calculatePieceCaptureVal(Board, Pieces, OpPieces, Val) :-
+    valid_moves(Board, Pieces, [], PlayerMoves),
+    valid_moves(Board, OpPieces, [], OpMoves),
+    moves_into_op_piece(Board, PlayerMoves, OpPieces, 0, Val1),
+    moves_into_op_piece(Board, OpMoves, Pieces, 0, Val2),
+    Val is (3 * Val1) - (8 * Val2).
+
+moves_into_op_piece(_, [], _, Val, Val).
+moves_into_op_piece(Board, [[_, TrgRow, TrgCol]|Moves], OpPieces, Val, Return) :-
+       NextVal is Val + 1,
+       index(Board, TrgRow, TrgCol, Elem),
+       if_then_else(has_element(Elem, OpPieces),
+                    moves_into_op_piece(Board, Moves, OpPieces, NextVal, Return),
+                    moves_into_op_piece(Board, Moves, OpPieces, Val, Return)).

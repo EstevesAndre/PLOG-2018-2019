@@ -37,11 +37,11 @@ removeData :-
     retract(piece(e, E)).
 
 setData :-
-assert(board( [ [p1, p2, p3, p4, p5, p6],
+assert(board( [ [p1, p2, e, p4, p5, p6],
         [ e,  e,  e,  e,  e,  e],
         [ e,  e,  e,  e,  e,  e],
         [ e,  e,  e,  e,  e,  e],
-        [ e,  e,  e,  e,  e,  e],
+        [ e,  e,  p3,  e,  e,  e],
         [pA, pB, pC, pD, pE, pF]
     ])),
 
@@ -137,5 +137,15 @@ assert(piece(e, [ ['.', '.', '.', '.', '.'],
            ['.', '.', '.', '.', '.']
         ])).
 
-opPieces([pA, pB, pC, pD, pE, pF], [p1, p2, p3, p4, p5, p6]).
-opPieces([p1, p2, p3, p4, p5, p6], [pA, pB, pC, pD, pE, pF]).
+opPieces([pA | _], [p1, p2, p3, p4, p5, p6]).
+opPieces([pB | _], [p1, p2, p3, p4, p5, p6]).
+opPieces([pC | _], [p1, p2, p3, p4, p5, p6]).
+opPieces([pD | _], [p1, p2, p3, p4, p5, p6]).
+opPieces([pE | _], [p1, p2, p3, p4, p5, p6]).
+opPieces([pF | _], [p1, p2, p3, p4, p5, p6]).
+opPieces([p1 | _], [pA, pB, pC, pD, pE, pF]).
+opPieces([p2 | _], [pA, pB, pC, pD, pE, pF]).
+opPieces([p3 | _], [pA, pB, pC, pD, pE, pF]).
+opPieces([p4 | _], [pA, pB, pC, pD, pE, pF]).
+opPieces([p5 | _], [pA, pB, pC, pD, pE, pF]).
+opPieces([p6 | _], [pA, pB, pC, pD, pE, pF]).
