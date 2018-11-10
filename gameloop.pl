@@ -69,44 +69,47 @@ pin(Piece, TrgRow, TrgCol) :-
     assert(piece(Piece, NewMat)).
 
 /* Player and computer turns */
-p1Turn('Player') :- 
+p1Turn('Player', _) :- 
     !, nl, write('Player - your turn:'), nl,
     p1player.
 
-p1Turn('Player 1') :-
+p1Turn('Player 1', _) :-
     !, nl, write('Player 1 - your turn:'), nl,
     p1player.
 
-p1Turn('Computer 1') :-
+p1Turn('Computer 1', Depth) :-
     !, nl, write('Computer 1 - your turn:'), nl,
-    p1computer.
+    p1computer(Depth),
+    nl, write('Computer 1 - Move made.'), nl.
 
-p2Turn('Player 2') :-
+p2Turn('Player 2', _) :-
     !, nl, write('Player 2 - your turn:'), nl,
     p2player.
 
-p2Turn('Computer') :- 
+p2Turn('Computer', Depth) :- 
     !, nl, write('Computer - your turn:'), nl,
-    p2computer.
+    p2computer(Depth),
+    nl, write('Computer - Move made.'), nl.
 
-p2Turn('Computer 2') :-
+p2Turn('Computer 2', Depth) :-
     !, nl, write('Computer 2 - your turn:'), nl,
-    p2computer.
+    p2computer(Depth),
+    nl, write('Computer 2 - Move made.'), nl.
 
 
 /* Loop do jogo */
-gameloop(Player1, Player2) :-
-    p1Turn(Player1),
-    game_over(Player1, Player2),
+gameloop(Player1, Player2, Difficulty) :-
+    p1Turn(Player1, Difficulty),
     board(T),
     display_board(T,Player1),
-    p2Turn(Player2), 
     game_over(Player1, Player2),
+    p2Turn(Player2, Difficulty), 
     board(NewT),
     display_board(NewT, Player2),
-    gameloop(Player1, Player2).
+    game_over(Player1, Player2),
+    gameloop(Player1, Player2, Difficulty).
     
-startGame(Player1, Player2) :-
+startGame(Player1, Player2, Difficulty) :-
     board(T),
     display_board(T,Player1),
-    gameloop(Player1, Player2).
+    gameloop(Player1, Player2, Difficulty).

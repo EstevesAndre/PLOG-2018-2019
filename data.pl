@@ -37,11 +37,11 @@ removeData :-
     retract(piece(e, E)).
 
 setData :-
-assert(board( [ [p1, p2, e, p4, p5, p6],
+assert(board( [ [p1, p2, p3, p4, p5, p6],
         [ e,  e,  e,  e,  e,  e],
         [ e,  e,  e,  e,  e,  e],
         [ e,  e,  e,  e,  e,  e],
-        [ e,  e,  p3,  e,  e,  e],
+        [ e,  e,  e,  e,  e,  e],
         [pA, pB, pC, pD, pE, pF]
     ])),
 

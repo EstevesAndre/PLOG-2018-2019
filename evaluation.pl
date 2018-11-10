@@ -30,7 +30,7 @@ makeEvalMove(Board, NewBoard, [Piece, TrgRow, TrgCol]) :-
 
 /* Makes all valid moves for all pieces under evaluation */
 valid_moves(_, [], Moves, Moves).
-valid_moves(Board, [P|Pieces], Moves, Return) :-
+valid_moves(Board, [P|Pieces], Moves, Return) :-  
     if_then_else(has_element_matrix(P, Board),
                 getAvailableEvalMoves(Board, P, [], PieceMoves, 5, 5),
                 black(PieceMoves)),
