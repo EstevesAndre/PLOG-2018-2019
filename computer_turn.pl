@@ -3,22 +3,33 @@
 /* Gets computer move info if is the first player */
 p1computer(Depth) :-
     random_permutation([pA, pB, pC, pD, pE, pF], Pieces), 
+    removeExtraPieces(Pieces, [], NewPieces),
     board(T),
-    valid_moves(T, Pieces, [], Moves),
-    chooseBestMove(T, Moves, _, BestMove, -1000, _, Pieces, Depth),
+    valid_moves(T, NewPieces, [], Moves),
+    chooseBestMove(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
     moveAI(BestMove),
-    pinAI(Pieces),
-    pinAI(Pieces).
+    pinAI(NewPieces),
+    pinAI(NewPieces).
 
 /* Gets computer move info if is the sencond player */
 p2computer(Depth) :-
     random_permutation([p1, p2, p3, p4, p5, p6], Pieces), 
+    removeExtraPieces(Pieces, [], NewPieces),
     board(T),
-    valid_moves(T, Pieces, [], Moves),
-    chooseBestMove(T, Moves, _, BestMove, -1000, _, Pieces, Depth),
+    valid_moves(T, NewPieces, [], Moves),
+    chooseBestMove(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
     moveAI(BestMove),
-    pinAI(Pieces),
-    pinAI(Pieces).
+    pinAI(NewPieces),
+    pinAI(NewPieces).
+
+/* Removes pieces that are no longer on the board */
+removeExtraPieces([], Ret, Ret).
+removeExtraPieces([P|Pieces], NewPieces, Ret) :-
+    board(T),
+    if_then_else(has_element_matrix(P, T),
+                removeExtraPieces(Pieces, [P|NewPieces], Ret),
+                removeExtraPieces(Pieces, NewPieces, Ret)).
+
 
 /* Makes a computer piece move */
 moveAI([Piece, TrgRow, TrgCol]) :-
