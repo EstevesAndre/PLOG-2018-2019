@@ -10,6 +10,7 @@ chooseBestMove(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Piece
                 chooseBestMove(Board, Moves, BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, 1)).
 
 chooseBestMove(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, Depth) :-
+    Depth \= 1, 
     opPieces(Pieces, OpPieces),
     NewDepth is Depth - 1,
     makeEvalMove(Board, NewBoard, M),
@@ -117,8 +118,8 @@ calculatePinVal(Board, [], [P|OpPieces], Val, Return) :-
     TotalCnt is Cnt1 + Cnt2,
     NextVal is Val - TotalCnt,
     if_then_else(has_element_matrix(P, Board),
-                calculatePinVal(Board, Pieces, OpPieces, NextVal, Return),
-                calculatePinVal(Board, Pieces, OpPieces, Val, Return)).
+                calculatePinVal(Board, [], OpPieces, NextVal, Return),
+                calculatePinVal(Board, [], OpPieces, Val, Return)).
 
 calculatePinVal(Board, [P|Pieces], OpPieces, Val, Return) :-
     piece(P, Mat),

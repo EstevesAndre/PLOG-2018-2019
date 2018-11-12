@@ -23,8 +23,6 @@ removeData :-
     retract(piece(p1, P1)),
     piece(p2, P2),
     retract(piece(p2, P2)),
-    piece(p2, P2),
-    retract(piece(p3, P3)),
     piece(p3, P3),
     retract(piece(p3, P3)),
     piece(p4, P4),
