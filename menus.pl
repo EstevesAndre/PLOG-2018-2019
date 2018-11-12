@@ -71,7 +71,7 @@ printDifficulty :-
     write('|           (2) Medium              |'),nl,
     write('|           (3) Hard                |'),nl,
     write('|                                   |'),nl,
-    write('_____________________________________'),nl,
+    write('|___________________________________|'),nl,
     write('--> Insert your option: ').
 
 parseDifficulty(1, 2) :-    

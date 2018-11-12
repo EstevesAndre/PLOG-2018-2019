@@ -6,9 +6,9 @@ p1computer(Depth) :-
     board(T),
     valid_moves(T, Pieces, [], Moves),
     chooseBestMove(T, Moves, _, BestMove, -1000, _, Pieces, Depth),
-    moveAI(BestMove).
-    %pinAI(Pieces),
-    %pinAI(Pieces).
+    moveAI(BestMove),
+    pinAI(Pieces),
+    pinAI(Pieces).
 
 /* Gets computer move info if is the sencond player */
 p2computer(Depth) :-
@@ -16,9 +16,9 @@ p2computer(Depth) :-
     board(T),
     valid_moves(T, Pieces, [], Moves),
     chooseBestMove(T, Moves, _, BestMove, -1000, _, Pieces, Depth),
-    moveAI(BestMove).
-    %pinAI(Pieces),
-    %pinAI(Pieces).
+    moveAI(BestMove),
+    pinAI(Pieces),
+    pinAI(Pieces).
 
 /* Makes a computer piece move */
 moveAI([Piece, TrgRow, TrgCol]) :-
@@ -49,19 +49,13 @@ chooseBestPin(Piece, Row, Col) :-
 getUnvailableMoves(_, Return, Return, 0, 1).
 getUnvailableMoves(Piece, Moves, Return, 0, PinY) :-
     NewY is PinY - 1,
-    getAvailableMoves(Piece, Moves, Return, 5, NewY).
+    getUnvailableMoves(Piece, Moves, Return, 5, NewY).
 getUnvailableMoves(Piece, Moves, Return, PinX, PinY) :-
     NewX is PinX - 1,
-    board(T),
-    index(T, PieceX, PieceY, Piece),
-    Xdiff is PinX-3,
-    Ydiff is 3-PinY,
-    Xpos is PieceX+Xdiff,
-    Ypos is PieceY-Ydiff,
-    append(Moves, [[Xpos, Ypos]], NewMoves),
+    append(Moves, [[PinX, PinY]], NewMoves),
     if_then_else(checkEmptyPin(Piece, PinX, PinY),
-                 getAvailableMoves(Piece, NewMoves, Return, NewX, PinY),
-                 getAvailableMoves(Piece, Moves, Return, NewX, PinY)) , !.
+                 getUnvailableMoves(Piece, NewMoves, Return, NewX, PinY),
+                 getUnvailableMoves(Piece, Moves, Return, NewX, PinY)) , !.
     
 checkEmptyPin(Piece, PinX, PinY) :-
     piece(Piece, Mat),
