@@ -40,7 +40,7 @@ moveAI([Piece, TrgRow, TrgCol]) :-
 /* Gets best pin for computer */
 pinAI(Pieces) :-
     choosePinPiece(Pieces, _, Piece, 1000),
-    chooseBestPin(Piece, Col, Row),
+    chooseBestPin(Piece, Row, Col),
     pin(Piece, Row, Col).
 
 /* Gets the piece with the least moves available */
@@ -55,7 +55,10 @@ choosePinPiece([P|Pieces], Piece, PieceRet, PieceMoves) :-
 
 /* Gets best pin for piece */
 chooseBestPin(Piece, Row, Col) :-
-    getUnvailableMoves(Piece, [], [[Row, Col]|_], 5, 5).  
+    getUnvailableMoves(Piece, [], UnMoves, 5, 5),
+    getAvailableMoves(Piece, [], Moves, 5, 5),
+    length(Moves, NMoves),
+    testBestPin(Piece, UnMoves, NMoves, _, [Row|Col], 0).
 
 getUnvailableMoves(_, Return, Return, 0, 1).
 getUnvailableMoves(Piece, Moves, Return, 0, PinY) :-
@@ -79,3 +82,13 @@ checkEmptyPin(Piece, PinX, PinY) :-
     PieceX+Xdiff < 7,
     PieceY+Ydiff > 0,
     PieceY+Ydiff < 7.
+
+testBestPin(_, _, _, Ret, Ret, 1).
+testBestPin(Piece, [[Row|[Col|_]]|Pins], NMoves, Move, Ret, 0) :-
+    pin(Piece, Row, Col),
+    getAvailableMoves(Piece, [], Moves, 5, 5),
+    unpin(Piece, Row, Col),
+    length(Moves, N),
+    if_then_else(N > NMoves,
+                testBestPin(_, _, _, [Row|Col], Ret, 1),
+                testBestPin(Piece, Pins, NMoves, Move, Ret, 0)).

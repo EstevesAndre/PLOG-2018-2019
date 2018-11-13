@@ -68,6 +68,12 @@ pin(Piece, TrgRow, TrgCol) :-
     retract(piece(Piece, Mat)),
     assert(piece(Piece, NewMat)).
 
+unpin(Piece, TrgRow, TrgCol) :-
+    piece(Piece, Mat),
+    setElemMatrix(TrgRow, TrgCol, '.', Mat, NewMat),
+    retract(piece(Piece, Mat)),
+    assert(piece(Piece, NewMat)).
+
 /* Player and computer turns */
 p1Turn('Player', _) :- 
     !, nl, write('Player - your turn:'), nl,
