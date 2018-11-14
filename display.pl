@@ -1,18 +1,40 @@
+/* Displays top of the board view */
 display_horizontal:-        
         write('|-------------------------------------|'), nl,
 	write('|  1  |  2  |  3  |  4  |  5  |  6  | |'), nl.
 
+/* Displays name of the last player to make a move 
+
+        Name - the name of the player that made the last move
+*/
 display_head(Name) :-
         write('---------------------------------------'), nl,
         write('|               '),
         write(Name),
         nl.
 
+/* Displays board
+
+      Displays board head and name followed by the board itself  
+
+      [Head|Tail] - board to be displayed
+      Player - the player that made the last move
+ */
 display_board([Head|Tail],Player1) :-
         display_head(Player1),
 	display_horizontal,
 	display_board_aux([Head|Tail], Player1, 6).
 
+
+/* Displays board itself
+
+      Displays all rows of the board 
+
+      Usage: display_board_aux(+Board, _, 6)
+
+      [Head|Tail] - the portion of the board yet to be displayed
+      X_val - the line currently being displayed
+ */
 display_board_aux([], _, _) :-
         write('---------------------------------------'), nl.
 
@@ -22,7 +44,9 @@ display_board_aux([Head|Tail], _, X_val) :-
         X_next is X_val - 1,
         display_board_aux(Tail, _, X_next).
 
-display_line([], _, 1, _) :- write('| |').  %ultimo | colocado por linha
+
+
+display_line([], _, 1, _) :- write('| |').
 
 display_line([Head|Tail], Original, N_line, X_val) :-
         N_line \= 0,

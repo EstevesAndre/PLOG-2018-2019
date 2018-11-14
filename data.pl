@@ -1,9 +1,11 @@
 :- dynamic board/1.
 :- dynamic piece/2.
 
+/* Restarts internal data representation of board and pieces*/
 restartData :-
     if_then_else(removeData, setData, setData).
 
+/* Removes all stated data from previous played games */
 removeData :-
     board(T),
     retract(board(T)),
@@ -34,6 +36,7 @@ removeData :-
     piece(e, E),
     retract(piece(e, E)).
 
+/* Restores stated data with innitial values for game start */
 setData :-
 assert(board( [ [p1, p2, p3, p4, p5, p6],
         [ e,  e,  e,  e,  e,  e],

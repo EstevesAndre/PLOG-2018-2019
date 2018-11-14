@@ -1,5 +1,25 @@
-/* Gets the best move in the position, evaluationg using the determined depth */
+/* Gets the best move in the position, evaluationg using the determined depth 
 
+    If depth = 1:
+        Gets the value of the current test position and checks if it is better that the current best test position
+    
+    If depth >1:
+        Creates a test position by making a possible move, the best opponent move followed by the best player move,
+        all calculated using depth-1
+        Replaces the best move so far with the possible move if the return evaluation is better
+
+    Usage: chooseBestMove(+Board, +Moves, _, -BestMove, -1000, _, +Pieces, +Depth)
+
+    Board - the current test board. it usually does not match the current playing board
+    [M|Moves] -  all the moves yet to be tested
+    BestMove - auxiliary argument to store the current best move
+    MoveREt - return best move
+    BestMoveEval - the evaluation corresponding to the current best move. should be called innitialy with a value
+                lower than the minimun evaluation possible (in th example: -1000)
+    EvalRet - return best move evaluation
+    Pieces - the pieces that correspond to the player from which perspective the board is being evaluated
+    Depth - the current depth of move search
+*/
 chooseBestMove(_, [], MoveRet, MoveRet, EvalRet, EvalRet, _, _).
 
 chooseBestMove(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, 1) :-
@@ -23,13 +43,34 @@ chooseBestMove(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Piece
                 chooseBestMove(Board, Moves, M, MoveRet, Eval, EvalRet, Pieces, Depth),
                 chooseBestMove(Board, Moves, BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, Depth)).
 
-/* Makes an evaluation move on a depth board */
+/* Moves a piece in a test board to a new position
+
+    Gets current piece location
+    Replaces current piece lovation with empty (== 'e')
+    Replaces new piece lovation with the chose piece
+
+    Board - the test board
+    NewBoard - test board return
+    Piece - the chosen piece
+    TrgRow - row of the piece's new position
+    TrgCol - column of the piece's new position
+*/
 makeEvalMove(Board, NewBoard, [Piece, TrgRow, TrgCol]) :-
     index(Board, Row, Col, Piece),
     setElemMatrix(Row, Col, 'e', Board, AuxBoard),
     setElemMatrix(TrgRow, TrgCol, Piece, AuxBoard, NewBoard).
 
-/* Makes all valid moves for all pieces under evaluation */
+/* Gets all valid moves for all pieces under evaluation 
+
+    For each piece, gets all available moves on the current test board
+
+    Usage: valid_moves(+Board, +Pieces, [], -Moves)
+
+    Board - current test board
+    [P|Pieces] - pieces to still get available moves
+    Moves - auxiliary list to store current obtained moves
+    Return - moves return
+*/
 valid_moves(_, [], Moves, Moves).
 valid_moves(Board, [P|Pieces], Moves, Return) :-  
     if_then_else(has_element_matrix(P, Board),
@@ -40,6 +81,19 @@ valid_moves(Board, [P|Pieces], Moves, Return) :-
 
 black([]).
 
+/* Gets all currently available moves for a certain piece on the current test board
+
+    For each pin position, verifies if the piece can already use it for movement
+
+    Usage: getAvailableEvalMoves(+Board, +Piece, [], -Moves, 5, 5)
+
+    Board - the current test board
+    Piece - the piece to be checked
+    Moves - auxiliary array to store available moves
+    Return - return array
+    PinX - current X coordinate of the pin being tested
+    PinY - current Y coordinate of the pin being tested
+*/
 getAvailableEvalMoves(_, _, Return, Return, 0, 1).
 getAvailableEvalMoves(Board, Piece, Moves, Return, 0, PinY) :-
     NewY is PinY - 1,
@@ -56,6 +110,16 @@ getAvailableEvalMoves(Board, Piece, Moves, Return, PinX, PinY) :-
                  getAvailableEvalMoves(Board, Piece, NewMoves, Return, NewX, PinY),
                  getAvailableEvalMoves(Board, Piece, Moves, Return, NewX, PinY)) , !.
 
+/* Checks if a certain pin space in a piece is pinned and if it leads to an avalable move on the test board
+
+    Checks if the piece data has that space pinned
+    Checks if the pin is not currently pointing beyond the edge of the test board
+
+    Board - the current test board
+    Piece - the chosen piece
+    PinX - the X coordinate of the pin's position
+    PinY - the Y coordinate of the pin's position
+*/
 checkPinEval(Board, Piece, PinX, PinY) :-
     piece(Piece, Mat),
     index(Mat, PinX, PinY, 'o'),
@@ -78,7 +142,18 @@ checkPinEval(Board, Piece, PinX, PinY) :-
     PieceY+Ydiff > 0,
     PieceY+Ydiff < 7.
 
-/* Evaluates the position from the POV of the player with Pieces */
+/* Evaluates the position from the prespective of the player with the chosen pieces 
+
+    Uses four metrics to evaluate a position:
+        number of pieces on the board
+        number of pins on the board
+        number of available moves
+        number of pieces under the threat of being captured
+
+    Board - the current test board
+    Pieces - the pieces that correspond to the player from which perspective the board is being evaluated
+    Eval - return evaluation
+*/
 value(Board, Pieces, Eval) :-
     opPieces(Pieces, OpPieces),
     calculatePieceVal(Board, Pieces, OpPieces, 0, Val1),
