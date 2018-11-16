@@ -16,7 +16,7 @@ p1computer(Depth) :-
     removeExtraPieces(Pieces, [], NewPieces),
     board(T),
     valid_moves(T, NewPieces, [], Moves),
-    chooseBestMove(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
+    choose_move(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
     moveAI(BestMove),
     pinAI(NewPieces),
     pinAI(NewPieces).
@@ -37,7 +37,7 @@ p2computer(Depth) :-
     removeExtraPieces(Pieces, [], NewPieces),
     board(T),
     valid_moves(T, NewPieces, [], Moves),
-    chooseBestMove(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
+    choose_move(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
     moveAI(BestMove),
     pinAI(NewPieces),
     pinAI(NewPieces).
