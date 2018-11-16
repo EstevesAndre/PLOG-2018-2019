@@ -9,7 +9,7 @@ display_horizontal:-
 */
 display_head(Name) :-
         write('---------------------------------------'), nl,
-        write('|               '),
+        write('                '),
         write(Name),
         nl.
 

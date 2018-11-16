@@ -19,8 +19,7 @@ winnerP1(_) :-
     checkP1Pins, !.
 
 winnerP1(Player1) :-
-    write(Player1),
-    write(' wins!'), nl, nl,
+    printWin(Player1), nl, nl,
     fail.
 
 /* Checks for player 2 win
@@ -35,9 +34,23 @@ winnerP2(_) :-
     checkP2Pins, !.
 
 winnerP2(Player2) :-
-    write(Player2),
-    write(' wins!'), nl, nl,
+    printWin(Player2), nl, nl,
     fail.
+
+
+/* Prints win menu */
+printWin(Player) :-    
+    write('-------------------------------------------'), nl,
+    write('                 '),
+    write(Player),nl,
+    write('|                                          |'),nl,
+    write('|                  _____         ___       |'),nl,
+    write('|     \\          /   |   |\\   | |          |'),nl,
+    write('|      \\        /    |   | \\  | |__        |'),nl,
+    write('|       \\  /\\  /     |   |  \\ |    |       |'),nl,
+    write('|        \\/  \\/    __|__ |   \\| ___|       |'),nl,
+    write('|                                          |'),nl,
+    write('|__________________________________________|').
 
 /* Checks for isufficient number of pieces present in the board
 
