@@ -8,7 +8,7 @@
         all calculated using depth-1
         Replaces the best move so far with the possible move if the return evaluation is better
 
-    Usage: chooseBestMove(+Board, +Moves, _, -BestMove, -1000, _, +Pieces, +Depth)
+    Usage: choose_move(+Board, +Moves, _, -BestMove, -1000, _, +Pieces, +Depth)
 
     Board - the current test board. it usually does not match the current playing board
     [M|Moves] -  all the moves yet to be tested
@@ -20,28 +20,28 @@
     Pieces - the pieces that correspond to the player from which perspective the board is being evaluated
     Depth - the current depth of move search
 */
-chooseBestMove(_, [], MoveRet, MoveRet, EvalRet, EvalRet, _, _).
+choose_move(_, [], MoveRet, MoveRet, EvalRet, EvalRet, _, _).
 
-chooseBestMove(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, 1) :-
+choose_move(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, 1) :-
     makeEvalMove(Board, NewBoard, M),
     value(NewBoard, Pieces, Eval),
     if_then_else(Eval > BestMoveEval,
-                chooseBestMove(Board, Moves, M, MoveRet, Eval, EvalRet, Pieces, 1),
-                chooseBestMove(Board, Moves, BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, 1)).
+                choose_move(Board, Moves, M, MoveRet, Eval, EvalRet, Pieces, 1),
+                choose_move(Board, Moves, BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, 1)).
 
-chooseBestMove(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, Depth) :-
+choose_move(Board, [M|Moves], BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, Depth) :-
     Depth \= 1, 
     opPieces(Pieces, OpPieces),
     NewDepth is Depth - 1,
     makeEvalMove(Board, NewBoard, M),
     valid_moves(NewBoard, OpPieces, [], OpMoves),
-    chooseBestMove(NewBoard, OpMoves, _, BestOpMove, -1000, _, OpPieces, NewDepth),
+    choose_move(NewBoard, OpMoves, _, BestOpMove, -1000, _, OpPieces, NewDepth),
     makeEvalMove(NewBoard, DepthBoard, BestOpMove),
     valid_moves(DepthBoard, Pieces, [], DepthMoves),
-    chooseBestMove(DepthBoard, DepthMoves, _, _, -1000, Eval, Pieces, NewDepth),
+    choose_move(DepthBoard, DepthMoves, _, _, -1000, Eval, Pieces, NewDepth),
     if_then_else(Eval > BestMoveEval,
-                chooseBestMove(Board, Moves, M, MoveRet, Eval, EvalRet, Pieces, Depth),
-                chooseBestMove(Board, Moves, BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, Depth)).
+                choose_move(Board, Moves, M, MoveRet, Eval, EvalRet, Pieces, Depth),
+                choose_move(Board, Moves, BestMove, MoveRet, BestMoveEval, EvalRet, Pieces, Depth)).
 
 /* Moves a piece in a test board to a new position
 
