@@ -31,10 +31,6 @@ createEmptyPuzzle(Size,Puzzle):-
     length(Puzzle,Size),
     maplist(createEmptyLine(Size), Puzzle).
 
-matrix(Matrix, I, J, Value) :-
-    nth0(I, Matrix, Row),
-    nth0(J, Row, Value).
-
 replace( Matrix , X , Y , NewVal , NewMatrix ) :-
     append(RowPfx,[Row|RowSfx],Matrix),
     length(RowPfx,X),
@@ -59,13 +55,6 @@ fillPuzzle(Puzzle, Lines, Columns, X, Y, Size, Return):-
     replace(Puzzle, X, Y, Value, NewPuzzle),
     NewX is X + 1,
     fillPuzzle(NewPuzzle, Lines, Columns, NewX, Y, Size, Return).
-
-divide(List, L1, L2, Index):-
-    length(List, Length),
-    AuxLength is Length - Index,
-    append(L1, L2, List),
-    length(L1, Index),
-    length(L2, AuxLength).
 
 calculateValue(Lines, Columns, X, Y, Value):-
     nth0(X, Lines, Line),

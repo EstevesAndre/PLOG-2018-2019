@@ -31,13 +31,6 @@ drawNumber(Number, Line, Size, Y) :-
     NewY is Y + 1,
     drawNumber(Number, Line, Size, NewY).
 
-applyToList([], _, _, []).
-
-applyToList([L1|L], Pred, Arg, [R1|R]) :-
-    O =.. [Pred, Arg, L1, R1],
-    O,
-    applyToList(L, Pred, Arg, R).
-
 getLine(Columns, X, Column) :-
     applyToList(Columns, nth1, X, Column).
 
