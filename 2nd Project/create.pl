@@ -73,8 +73,8 @@ if_then_else(_,_,Action2):- Action2.
 calculateValue(Lines, Columns, X, Y, Value):-
     nth0(X, Lines, Line),
     nth0(Y, Columns, Column),
-    divide(Line, LeftAux, Right, X),
-    divide(Column, UpAux, Down, Y),
+    divide(Line, LeftAux, Right, Y),
+    divide(Column, UpAux, Down, X),
     reverse(LeftAux,Left),
     reverse(UpAux, Up),
     write(Up),write(Down), write(Left), write(Right),nl,
