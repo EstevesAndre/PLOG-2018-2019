@@ -43,13 +43,10 @@ replace( Matrix , X , Y , NewVal , NewMatrix ) :-
     append(ColPfx,[NewVal|ColSfx],RowNew),
     append(RowPfx,[RowNew|RowSfx],NewMatrix).
 
-createPuzzle(Lines,Columns, Size, Puzzle):-
+createPuzzle(Size, Puzzle):-
     createGrid(Lines,Columns, Size),
-    createEmptyGrid(EmptyLines, EmptyColumns, Size),
     createEmptyPuzzle(Size,EmptyPuzzle),
-    fillPuzzle(EmptyPuzzle, Lines, Columns, 0, 0, Size, Puzzle),
-    drawPuzzle(Puzzle, EmptyLines, EmptyColumns, Size),
-    drawPuzzle(Puzzle, Lines, Columns, Size).
+    fillPuzzle(EmptyPuzzle, Lines, Columns, 0, 0, Size, Puzzle).
 
 fillPuzzle(Puzzle, _, _, _, Size, Size, Puzzle):- !.
 
@@ -68,10 +65,7 @@ divide(List, L1, L2, Index):-
     AuxLength is Length - Index,
     append(L1, L2, List),
     length(L1, Index),
-    length(L2, AuxLength).    
-
-if_then_else(Condition, Action1, _):- Condition, !, Action1.
-if_then_else(_,_,Action2):- Action2.
+    length(L2, AuxLength).
 
 calculateValue(Lines, Columns, X, Y, Value):-
     nth0(X, Lines, Line),
@@ -85,51 +79,3 @@ calculateValue(Lines, Columns, X, Y, Value):-
     if_then_else( nth0(ValUp, Up, 1), true, length(Up,ValUp)),
     if_then_else( nth0(ValDown, Down, 1), true, length(Down,ValDown)),
     Value is ValLeft + ValRight + ValUp + ValDown + 1.
-
-drawPuzzle(Puzzle, Lines, _, X, X) :- !, 
-    nth1(X, Puzzle, Number),
-    nth1(X, Lines, Line),
-    drawNumber(Number, Line, X, 1).
-
-drawPuzzle(Puzzle, Lines, Columns, Size, X) :-
-    nth1(X, Puzzle, Number),
-    nth1(X, Lines, Line),
-    drawNumber(Number, Line, Size, 1),
-    getLine(Columns, X, Column),
-    drawLine(Column),
-    NextX is X + 1,
-    drawPuzzle(Puzzle, Lines, Columns, Size, NextX).
-
-drawPuzzle(Puzzle, Lines, Columns, Size) :-
-    nl,
-    drawPuzzle(Puzzle, Lines, Columns, Size, 1).
-
-drawNumber(Number, _, Y, Y) :-
-    nth1(Y, Number, N),
-    write(' '), write(N), write(' '),
-    nl.
-
-drawNumber(Number, Line, Size, Y) :-
-    nth1(Y, Number, N),
-    write(' '), write(N), write(' '),
-    nth1(Y, Line, Door),
-    if_then_else(Door =:= 1, write('|'), write(' ')),
-    NewY is Y + 1,
-    drawNumber(Number, Line, Size, NewY).
-
-applyToList([], _, _, []).
-
-applyToList([L1|L], Pred, Arg, [R1|R]) :-
-    O =.. [Pred, Arg, L1, R1],
-    O,
-    applyToList(L, Pred, Arg, R).
-
-getLine(Columns, X, Column) :-
-    applyToList(Columns, nth1, X, Column).
-
-drawLine([]) :- nl.
-
-drawLine([C|Column]) :-
-    if_then_else(C =:= 1, write('---'), write('   ')),
-    write(' '),
-    drawLine(Column).
