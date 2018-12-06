@@ -17,3 +17,27 @@ divide(List, L1, L2, Index):-
     append(L1, L2, List),
     length(L1, Index),
     length(L2, AuxLength).
+
+fixMatrixColumns([], _).
+
+fixMatrixColumns([Line|Matrix], Size) :-
+    length(Line, Size),
+    domain(Line, 0, 1),
+    fixMatrixColumns(Matrix, Size).
+
+matrixToList([], []).
+matrixToList([[] | Matrix], List) :-
+    matrixToList(Matrix, List).
+matrixToList([[L|L1] | Matrix], [L|List]) :-
+    matrixToList([L1|Matrix], List).
+
+listToMatrix(List, Matrix, NRows, NCols) :-
+    listToMatrix(List, Matrix, 0, 0, NRows, NCols).
+
+listToMatrix([], [], NRows, _, NRows, _).
+listToMatrix(List, [[]|Matrix], Row, NCols, NRows, NCols) :-
+    NextRow is Row + 1,
+    listToMatrix(List, Matrix, NextRow, 0, NRows, NCols).
+listToMatrix([L|List], [[L|L1]|Matrix], Row, Col, NRows, NCols) :-
+    NextCol is Col + 1,
+    listToMatrix(List, [L1|Matrix], Row, NextCol, NRows, NCols).
