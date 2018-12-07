@@ -39,7 +39,7 @@ replace( Matrix , X , Y , NewVal , NewMatrix ) :-
     append(ColPfx,[NewVal|ColSfx],RowNew),
     append(RowPfx,[RowNew|RowSfx],NewMatrix).
 
-createPuzzle(Size, Puzzle):-
+createPuzzle(Size, Puzzle, Lines, Columns):-
     createGrid(Lines,Columns, Size),
     createEmptyPuzzle(Size,EmptyPuzzle),
     fillPuzzle(EmptyPuzzle, Lines, Columns, 0, 0, Size, Puzzle).

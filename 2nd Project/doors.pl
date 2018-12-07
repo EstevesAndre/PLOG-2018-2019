@@ -6,9 +6,9 @@
 doors(N) :-
     prompt(_, ''),
     nl, write('Puzzle:'), nl, nl,
-    createPuzzle(N, Puzzle),
-    createEmptyGrid(EmptyLines, EmptyCols, N),
-    drawPuzzle(Puzzle, EmptyLines, EmptyCols, N),
+    createPuzzle(N, Puzzle, SolLines, SolCols),
+    % createEmptyGrid(EmptyLines, EmptyCols, N),
+    drawPuzzle(Puzzle, SolLines, SolCols, N),
     write('Press ENTER to show solution.'),
     get_code(C),
     if_then_else(C =:= 10, true, skip_line),
