@@ -30,7 +30,8 @@ solvePuzzle(Puzzle, Sol,  N) :-
     matrixToList(Cols, C),
     append(L, C, Sol),
     domain(Sol, 0, 1),
-    labeling([ffc], Sol).
+    labeling([bisect], Sol),
+    fd_statistics(backtracks, Stats), write(Stats).
 
 
 /*
